@@ -1,0 +1,15 @@
+{
+  "name": "縦書き小説エディタ",
+  "short_name": "縦書きエディタ",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#111318",
+  "theme_color": "#111318",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

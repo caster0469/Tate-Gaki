@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>縦書き小説エディタ - ホーム</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="app-body">
+  <header class="top-bar">
+    <div class="brand">
+      <span class="brand-title">縦書き小説エディタ</span>
+      <span class="brand-sub">ビルド不要 / オフライン対応</span>
+    </div>
+    <div class="top-actions">
+      <button id="createProject" class="btn primary">新規作品</button>
+      <button id="importProject" class="btn">JSONインポート</button>
+    </div>
+  </header>
+
+  <main class="home">
+    <section class="panel">
+      <div class="panel-header">
+        <h2>作品一覧</h2>
+        <div class="panel-controls">
+          <input id="searchInput" class="input" type="search" placeholder="タイトル検索" />
+          <select id="sortSelect" class="input">
+            <option value="updatedAt">更新日時 (降順)</option>
+            <option value="title">名前 (昇順)</option>
+          </select>
+          <button id="exportAll" class="btn">一覧JSONエクスポート</button>
+        </div>
+      </div>
+      <div id="projectList" class="project-list"></div>
+    </section>
+  </main>
+
+  <input id="importFile" type="file" accept="application/json" hidden />
+
+  <script src="app-shared.js"></script>
+  <script src="app-home.js"></script>
+</body>
+</html>

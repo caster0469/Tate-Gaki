@@ -14,6 +14,8 @@ const AppStorage = (() => {
     fontSize: 18,
     lineHeight: 1.8,
     columns: 2,
+    gridColumns: 40,
+    gridRows: 17,
     paragraphMode: "indent",
     autoTCY: false,
     emphStyle: "dot",

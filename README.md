@@ -10,7 +10,7 @@
 ## 実装した仕様（決めた仕様）
 - **データ保存**: IndexedDB (`tategakiNovelDB`) を主に使用し、失敗時は LocalStorage へ自動フォールバック。
 - **章本文の保存形式**: ルビ/縦中横/傍点を保持するため HTML を保存。
-- **縦書き段組の列順**: `writing-mode: vertical-rl` + `direction: rtl` を併用し、列は右端から開始。
+- **縦書き段組の列順**: `writing-mode: vertical-rl` による右端開始の列順を採用し、本文の字送りは上→下になるよう `direction: ltr` で統一。
 - **本文Bidiの安定化**: 本文直下の要素に `direction: ltr` を適用。
 - **段落モード**: 作品設定の `paragraphMode` を `indent / none / spaced` で切替。
 - **検索/置換**: DOMテキストノードを走査して置換し、タグ構造 (ruby/span) を破壊しない。

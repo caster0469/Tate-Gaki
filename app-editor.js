@@ -359,7 +359,6 @@ const exportAsHtml = () => {
     `)
     .join("\n");
 
-  const direction = settings.direction === "horizontal-tb" ? "ltr" : "rtl";
   const html = `<!doctype html>
 <html lang="ja">
 <head>
@@ -377,10 +376,9 @@ const exportAsHtml = () => {
     line-height: ${settings.lineHeight};
     column-count: ${settings.columns};
     column-gap: 2.5em;
-    direction: ${direction};
+    direction: ltr;
   }
   .chapter-body > * { direction: ltr; }
-  .chapter-body.vertical { direction: rtl; }
   .tcy { text-combine-upright: all; -webkit-text-combine: horizontal; }
   .emph { text-emphasis: ${settings.emphStyle === "sesame" ? "sesame" : "filled dot"}; text-emphasis-position: over right; }
   .paragraph-indent p { text-indent: 1em; margin: 0 0 0.5em; }

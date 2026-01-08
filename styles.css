@@ -273,17 +273,13 @@ body.app-body {
   column-count: var(--editor-columns, 1);
   column-gap: 2.5em;
   column-fill: auto;
-  direction: ltr;
-  writing-mode: var(--editor-direction, vertical-rl);
+  direction: rtl;
+  writing-mode: vertical-rl;
   text-orientation: mixed;
   background: transparent;
 }
 
 .editor > * {
-  direction: ltr;
-}
-
-.editor.horizontal {
   direction: ltr;
 }
 

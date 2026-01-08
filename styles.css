@@ -273,7 +273,7 @@ body.app-body {
   column-count: var(--editor-columns, 1);
   column-gap: 2.5em;
   column-fill: auto;
-  direction: rtl;
+  direction: ltr;
   writing-mode: var(--editor-direction, vertical-rl);
   text-orientation: mixed;
   background: transparent;

@@ -3,7 +3,6 @@ const projectId = qs.get("id");
 
 const backHome = document.getElementById("backHome");
 const projectTitle = document.getElementById("projectTitle");
-const directionSelect = document.getElementById("directionSelect");
 const fontSelect = document.getElementById("fontSelect");
 const fontSizeInput = document.getElementById("fontSizeInput");
 const lineHeightInput = document.getElementById("lineHeightInput");
@@ -62,10 +61,16 @@ const updateCounts = () => {
 
 const getActiveChapter = () => state.project?.chapters.find((c) => c.id === state.activeChapterId);
 
+const normalizeDirection = (settings) => {
+  if (settings.direction !== "vertical-rl") {
+    settings.direction = "vertical-rl";
+  }
+};
+
 const applySettings = () => {
   if (!state.project) return;
   const settings = state.project.settings;
-  directionSelect.value = settings.direction;
+  normalizeDirection(settings);
   fontSelect.value = settings.fontFamily;
   fontSizeInput.value = settings.fontSize;
   lineHeightInput.value = settings.lineHeight;
@@ -78,9 +83,6 @@ const applySettings = () => {
   paper.style.setProperty("--editor-size", `${settings.fontSize}px`);
   paper.style.setProperty("--editor-line-height", settings.lineHeight);
   paper.style.setProperty("--editor-columns", settings.columns);
-  paper.style.setProperty("--editor-direction", settings.direction);
-
-  editor.classList.toggle("horizontal", settings.direction === "horizontal-tb");
   editor.classList.remove("paragraph-indent", "paragraph-none", "paragraph-spaced");
   editor.classList.add(`paragraph-${settings.paragraphMode}`);
 
@@ -376,7 +378,7 @@ const exportAsHtml = () => {
     line-height: ${settings.lineHeight};
     column-count: ${settings.columns};
     column-gap: 2.5em;
-    direction: ltr;
+    direction: rtl;
   }
   .chapter-body > * { direction: ltr; }
   .tcy { text-combine-upright: all; -webkit-text-combine: horizontal; }
@@ -399,7 +401,6 @@ const exportAsHtml = () => {
 
 const updateSettings = () => {
   const settings = state.project.settings;
-  settings.direction = directionSelect.value;
   settings.fontFamily = fontSelect.value;
   settings.fontSize = Number(fontSizeInput.value || 18);
   settings.lineHeight = Number(lineHeightInput.value || 1.8);
@@ -532,7 +533,7 @@ replaceAllBtn.addEventListener("click", () => {
   saveProjectDebounced();
 });
 
-[directionSelect, fontSelect, fontSizeInput, lineHeightInput, columnsInput, autoTcyToggle, paragraphSelect, emphSelect]
+[fontSelect, fontSizeInput, lineHeightInput, columnsInput, autoTcyToggle, paragraphSelect, emphSelect]
   .forEach((el) => el.addEventListener("change", updateSettings));
 
 exportProjectBtn.addEventListener("click", exportProject);

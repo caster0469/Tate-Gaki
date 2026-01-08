@@ -7,6 +7,8 @@ const fontSelect = document.getElementById("fontSelect");
 const fontSizeInput = document.getElementById("fontSizeInput");
 const lineHeightInput = document.getElementById("lineHeightInput");
 const columnsInput = document.getElementById("columnsInput");
+const gridColumnsInput = document.getElementById("gridColumnsInput");
+const gridRowsInput = document.getElementById("gridRowsInput");
 const rubyBtn = document.getElementById("rubyBtn");
 const tcyBtn = document.getElementById("tcyBtn");
 const emphBtn = document.getElementById("emphBtn");
@@ -61,20 +63,28 @@ const updateCounts = () => {
 
 const getActiveChapter = () => state.project?.chapters.find((c) => c.id === state.activeChapterId);
 
-const normalizeDirection = (settings) => {
+const normalizeSettings = (settings) => {
   if (settings.direction !== "vertical-rl") {
     settings.direction = "vertical-rl";
+  }
+  if (!Number.isFinite(settings.gridColumns) || settings.gridColumns < 1) {
+    settings.gridColumns = 40;
+  }
+  if (!Number.isFinite(settings.gridRows) || settings.gridRows < 1) {
+    settings.gridRows = 17;
   }
 };
 
 const applySettings = () => {
   if (!state.project) return;
   const settings = state.project.settings;
-  normalizeDirection(settings);
+  normalizeSettings(settings);
   fontSelect.value = settings.fontFamily;
   fontSizeInput.value = settings.fontSize;
   lineHeightInput.value = settings.lineHeight;
   columnsInput.value = settings.columns;
+  gridColumnsInput.value = settings.gridColumns;
+  gridRowsInput.value = settings.gridRows;
   autoTcyToggle.checked = settings.autoTCY;
   paragraphSelect.value = settings.paragraphMode;
   emphSelect.value = settings.emphStyle;
@@ -83,6 +93,8 @@ const applySettings = () => {
   paper.style.setProperty("--editor-size", `${settings.fontSize}px`);
   paper.style.setProperty("--editor-line-height", settings.lineHeight);
   paper.style.setProperty("--editor-columns", settings.columns);
+  paper.style.setProperty("--grid-columns", settings.gridColumns);
+  paper.style.setProperty("--grid-rows", settings.gridRows);
   editor.classList.remove("paragraph-indent", "paragraph-none", "paragraph-spaced");
   editor.classList.add(`paragraph-${settings.paragraphMode}`);
 
@@ -368,7 +380,22 @@ const exportAsHtml = () => {
 <title>${state.project.title || "作品"}</title>
 <style>
   body { margin: 0; padding: 24px; font-family: ${settings.fontFamily}; }
-  .paper { background: #f5f1e8; color: #1c1b16; padding: 24px; }
+  .paper {
+    background: #f5f1e8;
+    color: #1c1b16;
+    padding: 24px;
+    --grid-columns: ${settings.gridColumns};
+    --grid-rows: ${settings.gridRows};
+    --grid-color: rgba(28, 27, 22, 0.12);
+    background-image:
+      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: calc(100% / var(--grid-columns)) calc(100% / var(--grid-rows));
+    background-position: top right;
+    background-repeat: repeat;
+    background-origin: content-box;
+    background-clip: content-box;
+  }
   .chapter { page-break-after: always; }
   .chapter:last-child { page-break-after: auto; }
   .chapter-body {
@@ -405,6 +432,8 @@ const updateSettings = () => {
   settings.fontSize = Number(fontSizeInput.value || 18);
   settings.lineHeight = Number(lineHeightInput.value || 1.8);
   settings.columns = Number(columnsInput.value || 1);
+  settings.gridColumns = Math.max(1, Number(gridColumnsInput.value || 40));
+  settings.gridRows = Math.max(1, Number(gridRowsInput.value || 17));
   settings.autoTCY = autoTcyToggle.checked;
   settings.paragraphMode = paragraphSelect.value;
   settings.emphStyle = emphSelect.value;
@@ -533,7 +562,7 @@ replaceAllBtn.addEventListener("click", () => {
   saveProjectDebounced();
 });
 
-[fontSelect, fontSizeInput, lineHeightInput, columnsInput, autoTcyToggle, paragraphSelect, emphSelect]
+[fontSelect, fontSizeInput, lineHeightInput, columnsInput, gridColumnsInput, gridRowsInput, autoTcyToggle, paragraphSelect, emphSelect]
   .forEach((el) => el.addEventListener("change", updateSettings));
 
 exportProjectBtn.addEventListener("click", exportProject);
